@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Metrics Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar glass-effect">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-chart-line neon-icon"></i>
+                    <span class="brand-text">SEO Metrics Pro</span>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-primary neon-btn" onclick="showAddWebsiteModal()">
+                        <i class="fas fa-plus"></i> Add Website
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Header -->
+            <section class="dashboard-header">
+                <div class="header-content glass-effect">
+                    <h1 class="dashboard-title">SEO Performance Dashboard</h1>
+                    <p class="dashboard-subtitle">Monitor and optimize your website's search performance</p>
+                </div>
+            </section>
+
+            <!-- Websites Grid -->
+            <section class="websites-section">
+                <div class="section-header">
+                    <h2 class="section-title">Your Websites</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="refreshData()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="websites-grid" class="websites-grid">
+                    <!-- Website cards will be populated here -->
+                </div>
+            </section>
+
+            <!-- Metrics Dashboard -->
+            <section id="metrics-section" class="metrics-section" style="display: none;">
+                <div class="metrics-header glass-effect">
+                    <h2 id="selected-website-name">Website Metrics</h2>
+                    <div class="metrics-actions">
+                        <select id="date-range" class="date-selector glass-input">
+                            <option value="7">Last 7 days</option>
+                            <option value="30" selected>Last 30 days</option>
+                            <option value="90">Last 90 days</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="runAudit()">
+                            <i class="fas fa-search"></i> Run Audit
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Cards -->
+                <div class="metrics-cards">
+                    <div class="metric-card glass-effect">
+                        <div class="metric-icon">
+                            <i class="fas fa-mouse-pointer neon-icon"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3 class="metric-value" id="total-clicks">0</h3>
+                            <p class="metric-label">Total Clicks</p>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card glass-effect">
+                        <div class="metric-icon">
+                            <i class="fas fa-eye neon-icon"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3 class="metric-value" id="total-impressions">0</h3>
+                            <p class="metric-label">Total Impressions</p>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card glass-effect">
+                        <div class="metric-icon">
+                            <i class="fas fa-percentage neon-icon"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3 class="metric-value" id="avg-ctr">0%</h3>
+                            <p class="metric-label">Average CTR</p>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card glass-effect">
+                        <div class="metric-icon">
+                            <i class="fas fa-trophy neon-icon"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3 class="metric-value" id="avg-position">0</h3>
+                            <p class="metric-label">Average Position</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-container">
+                    <div class="chart-card glass-effect">
+                        <h3 class="chart-title">Performance Over Time</h3>
+                        <canvas id="performance-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Add Website Modal -->
+        <div id="add-website-modal" class="modal">
+            <div class="modal-content glass-effect">
+                <div class="modal-header">
+                    <h3>Add New Website</h3>
+                    <button class="modal-close" onclick="hideAddWebsiteModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="add-website-form" class="modal-form">
+                    <div class="form-group">
+                        <label for="website-name">Website Name</label>
+                        <input type="text" id="website-name" class="glass-input" placeholder="My Awesome Website" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="website-url">Website URL</label>
+                        <input type="url" id="website-url" class="glass-input" placeholder="https://example.com" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="hideAddWebsiteModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary neon-btn">Add Website</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
